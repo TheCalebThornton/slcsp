@@ -1,0 +1,10 @@
+zipcode,state,county_code,name,rate_area
+36749,AL,01001,Autauga,11
+36749,AL,11111,Duplicate,11
+36016,XL,11111,NonShare,10
+36016,AL,01005,Barbour,13
+87046,NM,35043,Sandoval,1
+87037,NM,35045,San Juan,2
+67456,KS,20113,McPherson,6
+66843,KS,20115,Marion,6
+36091,AL,01001,Autauga,11

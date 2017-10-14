@@ -1,0 +1,14 @@
+Running my SLCSP Calculator...
+
+>>>>> SETUP ENV >>>>>
+1. Install Ruby 2.3.3
+2. Add RUBY_HOME to your path
+3. Verify Ruby is installed and on your path
+    New terminal -> ruby -v
+>>>>>>>>>>>>>>>>>>>>>>
+
+>>>>>> RUN CALCULATOR >>>>>>
+1. Open terminal and navigate to slcsp
+2. Run -> ruby lib/process_file.rb slcsp.csv
+3. After process is finished, check slcsp.csv file
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>
