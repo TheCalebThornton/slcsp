@@ -10,6 +10,13 @@ describe Location do
       end
     end
 
+    context 'given nil csv file path' do
+      it 'returns empty list' do
+        locations = Location.find_all_by_zipcode(nil, '1234')
+        expect(locations).to eql []
+      end
+    end
+
     context 'given zipcode not in file' do
       it 'returns empty list' do
         locations = Location.find_all_by_zipcode(testCsvPath, '123')
@@ -44,14 +51,6 @@ describe Location do
         expect(locations[1].county_code).to eql '01005'
         expect(locations[1].name).to eql 'Barbour'
         expect(locations[1].rate_area).to eql '13'
-      end
-    end
-  end
-  describe '.determine_rate_area_by_zipcode' do
-    context 'given nil zipcode' do
-      it 'returns nil' do
-        locations = Location.determine_rate_area_by_zipcode(testCsvPath, nil)
-        expect(locations).to eql nil
       end
     end
   end

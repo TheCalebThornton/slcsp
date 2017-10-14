@@ -1,27 +1,33 @@
 require 'csv'
 require_relative  'models/location'
 require_relative  'models/plan'
+require_relative  'services/location_service'
+require_relative  'services/plan_service'
+
+class SlcspProcessor
+  def self.findRateForZipCode(zip_csv, plans_csv, zipcode)
+    rate_for_zip = nil
+    locations = Location.find_all_by_zipcode(zip_csv, zipcode)
+    rate_area_map = LocationService.determine_rate_area_for_locations(locations)
+    plans = Plan.find_all_by_state_and_rate_area_and_metal_level(plans_csv, rate_area_map['state'], rate_area_map['rate_area'], 'Silver')
+    rate_for_zip = PlanService.determine_second_lowest_rate(plans)
+    rate_for_zip
+  end
+end
+
+
+
 slcsp = ARGV[0]
 zips = ARGV[1] || 'zips.csv'
 plans = ARGV[2] || 'plans.csv'
 
 puts "Processing #{slcsp} ..."
-#Proof of concept.. Read CSV and write it with new values
-# read:
-arr_of_arrs = CSV.read(slcsp)
+slcsp_contents = [['zipcode','rate']]
 CSV.foreach(slcsp, :col_sep => ",", :headers => true) do |row|
-  location = Location.find_by_zipcode(row['zipcode'])
-  #pass zipcode into method that searches Zips.csv for zip code
-  #method retrieves state and rate_area
+  rate = SlcspProcessor.findRateForZipCode(zips, plans, row['zipcode'])
+  slcsp_contents << [row['zipcode'], rate]
 end
-# manipulate:
-arr_of_arrs.first << "New Row"
-arr_of_arrs[1..-1].each{|row| row << 11029}
-
-# write:
 CSV.open(slcsp, 'w') do |csv|
-  arr_of_arrs.each{|line| csv << line}
+  slcsp_contents.each{|line| csv << line}
 end
-
-
 puts "... Finished Processing"
